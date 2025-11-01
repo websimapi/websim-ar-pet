@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>AR Pet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-gps.js"></script>
+    <script src="main.js" type="module"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="info">
+        <h1>AR Pet</h1>
+        <p>Searching for GPS signal...</p>
+        <p>This is a GPS-based AR demo. To see the pet, you may need to allow location access and walk around.</p>
+        <p>We are simulating your location in Los Angeles for this demo.</p>
+        <p>Pet Distance: <span id="distance">...</span> meters</p>
+    </div>
+
+    <!-- The AR scene -->
+    <a-scene
+        vr-mode-ui="enabled: false"
+        arjs="sourceType: webcam; debugUIEnabled: false;"
+        renderer="logarithmicDepthBuffer: true;">
+
+        <!-- The camera entity, which will move with the user's device -->
+        <a-camera gps-camera="simulateLatitude: 34.0522; simulateLongitude: -118.2437;"></a-camera>
+
+        <!-- Our voxel pet (a box for now) -->
+        <a-box
+            id="pet"
+            material="color: tomato"
+            scale="2 2 2"
+            gps-entity-place="latitude: 34.05235; longitude: -118.24380;"
+            pet-behavior>
+        </a-box>
+
+    </a-scene>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
