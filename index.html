@@ -10,6 +10,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="loading-overlay">
+        <img src="/instruction-overlay.png" alt="Allow camera and location access to see your pet!"/>
+        <div id="loading-text">Click to start the AR experience.</div>
+        <button id="start-button">Start</button>
+    </div>
+
     <div id="status-container">
         <p id="status">Waiting for permissions and GPS signal...</p>
     </div>
@@ -18,11 +24,9 @@
     <a-scene
         vr-mode-ui="enabled: false"
         renderer="logarithmicDepthBuffer: true;"
-        arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
-        >
+        embedded>
 
-        <!-- The camera entity, which will move with the user's device -->
-        <a-camera gps-camera rotation-reader></a-camera>
+        <!-- Camera will be added dynamically by the script -->
 
         <!-- Our voxel pet (a box for now) -->
         <a-box
