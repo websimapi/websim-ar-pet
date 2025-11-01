@@ -21,6 +21,22 @@ body {
     font-size: 1.2em;
 }
 
+#loading-overlay button {
+    margin-top: 20px;
+    padding: 12px 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    border-radius: 8px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
+
+#loading-overlay button:hover {
+    background-color: #45a049;
+}
+
 #loading-overlay img {
     max-width: 90%;
     max-height: 50%;

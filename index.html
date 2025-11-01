@@ -12,7 +12,8 @@
 <body>
     <div id="loading-overlay">
         <img src="instruction-overlay.png" alt="Please enable camera and location permissions.">
-        <p id="loading-text">Waiting for GPS and camera permissions...</p>
+        <p id="loading-text">Allow camera and location access to see your AR pet!</p>
+        <button id="start-button">Start AR</button>
     </div>
     <div id="info">
         <h1>AR Pet</h1>
@@ -23,7 +24,6 @@
     <!-- The AR scene -->
     <a-scene
         vr-mode-ui="enabled: false"
-        arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false;'
         renderer="logarithmicDepthBuffer: true;">
 
         <!-- The camera entity, which will move with the user's device -->

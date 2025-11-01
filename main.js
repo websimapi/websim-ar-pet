@@ -1,3 +1,64 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const sceneEl = document.querySelector('a-scene');
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const loadingText = document.getElementById('loading-text');
+    const startButton = document.getElementById('start-button');
+    const statusText = document.getElementById('status');
+
+    startButton.addEventListener('click', () => {
+        loadingText.textContent = 'Requesting location permissions...';
+        startButton.style.display = 'none';
+        requestPermissions();
+    });
+
+    function requestPermissions() {
+        // 1. Request Location
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                loadingText.textContent = 'Location access granted. Requesting camera...';
+                // 2. Request Camera
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                    .then((stream) => {
+                        // We don't need the stream ourselves, AR.js will handle it.
+                        // Stop the track to free up the camera for AR.js
+                        stream.getTracks().forEach(track => track.stop());
+                        startAR();
+                    })
+                    .catch((err) => {
+                        handlePermissionError(err, 'Camera');
+                    });
+            },
+            (err) => {
+                handlePermissionError(err, 'Location');
+            }
+        );
+    }
+
+    function handlePermissionError(err, type) {
+        let message = `Could not get ${type} access. Please check your browser settings and refresh.`;
+        if (err.code === 1 || err.name === "NotAllowedError" || err.name === "PermissionDeniedError") {
+            message = `${type} permission denied. Please enable it in your browser settings and refresh.`;
+        }
+        loadingText.textContent = message;
+        console.error(`Error getting ${type} permissions:`, err);
+    }
+
+    function startAR() {
+        loadingText.textContent = 'Starting AR experience...';
+        statusText.textContent = "Waiting for GPS signal...";
+
+        // Dynamically add the arjs component to the scene to start it
+        sceneEl.setAttribute('arjs', {
+            sourceType: 'webcam',
+            videoTexture: true,
+            debugUIEnabled: false
+        });
+
+        console.log("AR.js started");
+    }
+});
+
+
 // This component handles placing the pet and showing distance updates.
 AFRAME.registerComponent('gps-event-handler', {
     init: function () {
