@@ -10,21 +10,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="loading-overlay">
-        <img src="instruction-overlay.png" alt="Please enable camera and location permissions.">
-        <p id="loading-text">Allow camera and location access to see your AR pet!</p>
-        <button id="start-button">Start AR</button>
-    </div>
-    <div id="info">
-        <h1>AR Pet</h1>
-        <p id="status">Searching for your location...</p>
-        <p>Pet Distance: <span id="distance">...</span> meters</p>
+    <div id="status-container">
+        <p id="status">Waiting for permissions and GPS signal...</p>
     </div>
 
     <!-- The AR scene -->
     <a-scene
         vr-mode-ui="enabled: false"
-        renderer="logarithmicDepthBuffer: true;">
+        renderer="logarithmicDepthBuffer: true;"
+        arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
+        >
 
         <!-- The camera entity, which will move with the user's device -->
         <a-camera gps-camera rotation-reader></a-camera>
@@ -32,11 +27,10 @@
         <!-- Our voxel pet (a box for now) -->
         <a-box
             id="pet"
-            gps-event-handler
             material="color: tomato"
             scale="2 2 2"
             visible="false"
-            pet-behavior>
+            pet-manager>
         </a-box>
 
     </a-scene>

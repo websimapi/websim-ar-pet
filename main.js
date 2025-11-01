@@ -1,3 +1,63 @@
+/**
+ * This component manages the pet's state in the AR scene.
+ * It waits for the GPS to initialize, places the pet nearby,
+ * and provides feedback to the user.
+ */
+AFRAME.registerComponent('pet-manager', {
+    init: function () {
+        this.pet = this.el;
+        this.camera = document.querySelector('[gps-camera]');
+        this.statusText = document.getElementById('status');
+        this.petPlaced = false;
+
+        console.log('Pet manager initialized. Waiting for GPS.');
+        this.statusText.textContent = 'Getting GPS signal... Please be patient.';
+
+        window.addEventListener('gps-camera-update-position', this.onGpsUpdate.bind(this));
+    },
+
+    onGpsUpdate: function (e) {
+        if (!this.petPlaced) {
+            console.log('First GPS signal received:', e.detail.position);
+            this.statusText.textContent = 'Location found! Placing pet...';
+            
+            // Place pet 15 meters to the North of the user's initial location.
+            // 0.0001 adds roughly 11 meters. 0.00015 is ~16.5m.
+            const petLatitude = e.detail.position.latitude + 0.00015;
+            const petLongitude = e.detail.position.longitude;
+
+            this.pet.setAttribute('gps-entity-place', {
+                latitude: petLatitude,
+                longitude: petLongitude
+            });
+
+            this.pet.setAttribute('visible', true);
+            this.petPlaced = true;
+            console.log(`Pet placed at: lat=${petLatitude}, lon=${petLongitude}`);
+        }
+
+        // This code runs on every GPS update after the pet is placed.
+        if (this.petPlaced) {
+            // Using built-in distance function from AR.js aframe component
+            const distance = this.pet.components['gps-entity-place']?.distance;
+            
+            if (distance !== undefined && distance !== null) {
+                this.statusText.textContent = `Look around! Your pet is ${distance.toFixed(1)} meters away.`;
+            } else {
+                this.statusText.textContent = 'Look around to find your pet!';
+            }
+        }
+    },
+
+    tick: function () {
+        // Make the pet gently rotate if it's visible.
+        if (this.pet.getAttribute('visible')) {
+            this.el.object3D.rotation.y += 0.01;
+        }
+    }
+});
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const sceneEl = document.querySelector('a-scene');
     const loadingOverlay = document.getElementById('loading-overlay');
