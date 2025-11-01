@@ -23,16 +23,16 @@
     <!-- The AR scene -->
     <a-scene
         vr-mode-ui="enabled: false"
-        arjs="sourceType: webcam; debugUIEnabled: false;"
-        renderer="logarithmicDepthBuffer: true;"
-        gps-event-handler>
+        arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false;'
+        renderer="logarithmicDepthBuffer: true;">
 
         <!-- The camera entity, which will move with the user's device -->
-        <a-camera gps-camera></a-camera>
+        <a-camera gps-camera rotation-reader></a-camera>
 
         <!-- Our voxel pet (a box for now) -->
         <a-box
             id="pet"
+            gps-event-handler
             material="color: tomato"
             scale="2 2 2"
             visible="false"

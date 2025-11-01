@@ -1,10 +1,8 @@
 // This component handles placing the pet and showing distance updates.
 AFRAME.registerComponent('gps-event-handler', {
     init: function () {
-        const scene = this.el;
-        const pet = document.getElementById('pet');
+        const pet = this.el;
         const statusText = document.getElementById('status');
-        const distanceText = document.getElementById('distance');
         const loadingOverlay = document.getElementById('loading-overlay');
 
         let petPlaced = false;
